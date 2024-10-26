@@ -4,7 +4,7 @@
 **Current Version**: v1.1
 **Maintained**: Yes 
 - **Telegram**: [@Trixsec](https://t.me/Trixsec)  
-- **GitHub**: [github.com/Hash-Hammer](https://github.com/Hash-Hammer)
+- **GitHub**: [github.com/Hash-Hammer](https://github.com/TrixSec/Hash-Hammer)
 
 # Hash-Hammer 🔨
 **Hash-Hammer** is a multi-threaded hash-cracking tool designed for security testing and educational purposes.It supports both brute-force and dictionary-based password cracking modes.
@@ -30,7 +30,7 @@
 ## Usage
 ### Clone the Repository
 ```bash
-git clone https://github.com/your_username/Hash-Hammer.git
+git clone https://github.com/TrixSec/Hash-Hammer.git
 cd Hash-Hammer
 ```
 
