@@ -37,11 +37,11 @@ void banner() {
 
 void print_info_table() {
     printf(YELLOW "+-----------------------------------------------------------------+\n" RESET);
-    printf(YELLOW "| " RESET "Author      : " GREEN "Trix Cyrus            " YELLOW "|\n" RESET);
-    printf(YELLOW "| " RESET "Developed By: " GREEN "Trixsec Org           " YELLOW "|\n" RESET);
-    printf(YELLOW "| " RESET "Telegram    : " GREEN "@Trixsec              " YELLOW "|\n" RESET);
-    printf(YELLOW "| " RESET "GitHub      : " GREEN "github.com/Hash-Hammer" YELLOW "|\n" RESET);
-    printf(YELLOW "| " RESET "Supported   : " GREEN "MD5                   " YELLOW "|\n" RESET);
+    printf(YELLOW "| " RESET "Author      : " GREEN "Trix Cyrus                    " YELLOW "|\n" RESET);
+    printf(YELLOW "| " RESET "Developed By: " GREEN "Trixsec Org                   " YELLOW "|\n" RESET);
+    printf(YELLOW "| " RESET "Telegram    : " GREEN "@Trixsec                      " YELLOW "|\n" RESET);
+    printf(YELLOW "| " RESET "GitHub      : " GREEN "github.com/TrixSec/Hash-Hammer" YELLOW "|\n" RESET);
+    printf(YELLOW "| " RESET "Supported   : " GREEN "MD5                           " YELLOW "|\n" RESET);
     printf(YELLOW "+-----------------------------------------------------------------+\n" RESET);
     printf("\n");
 }
