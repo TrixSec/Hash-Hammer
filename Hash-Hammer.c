@@ -6,8 +6,11 @@
 #include <time.h>
 #include <unistd.h>
 #include <stdatomic.h>
+#include <curl/curl.h>
 
 #define CHARSET "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$#@"
+#define HASH_HAMMER_VERSION "1.1" 
+#define VERSION_URL "https://raw.githubusercontent.com/TrixSec/Hash-Hammer/main/VERSION"
 #define RED "\033[31m"
 #define GREEN "\033[32m"
 #define YELLOW "\033[33m"
@@ -158,12 +161,75 @@ void display_stats(clock_t start_time) {
     }
 }
 
+size_t write_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {
+    FILE *file = (FILE *)userdata;
+    size_t written = fwrite(ptr, size, nmemb, file);
+    return written;
+}
+
+void check_for_updates() {
+    CURL *curl;
+    CURLcode res;
+    FILE *version_file;
+    char latest_version[32];
+
+    curl = curl_easy_init();
+    if(curl) {
+        version_file = fopen("latest_version.txt", "w");
+        if (!version_file) {
+            fprintf(stderr, "[×] Error opening file to write latest version.\n");
+            return;
+        }
+
+        curl_easy_setopt(curl, CURLOPT_URL, VERSION_URL);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, version_file);
+        res = curl_easy_perform(curl);
+        
+        if(res != CURLE_OK) {
+            fprintf(stderr, "[×] Error fetching the latest version: %s\n", curl_easy_strerror(res));
+            fclose(version_file);
+            curl_easy_cleanup(curl);
+            return;
+        }
+
+        fclose(version_file);
+        curl_easy_cleanup(curl);
+
+        version_file = fopen("latest_version.txt", "r");
+        if (!version_file) {
+            fprintf(stderr, "[×] Error opening version file.\n");
+            return;
+        }
+
+        fgets(latest_version, sizeof(latest_version), version_file);
+        fclose(version_file);
+        latest_version[strcspn(latest_version, "\n")] = 0;  
+
+        if (strcmp(HASH_HAMMER_VERSION, latest_version) != 0) {
+            printf("[•] New version available: %s. Updating...\n", latest_version);
+            system("git reset --hard HEAD");
+            system("git pull");
+            version_file = fopen("VERSION", "w");
+            if (version_file) {
+                fprintf(version_file, "%s\n", latest_version);
+                fclose(version_file);
+            }
+            printf("[•] Update completed. Please rerun Hash-Hammer.\n");
+            exit(0);
+        } else {
+            printf("[•] You are using the latest version: %s.\n", latest_version);
+        }
+    }
+}
+
 int main() {
     char target_hash[33];
     int password_length, thread_count, mode;
     char password_file[256] = {0};
 
     banner();
+    check_for_updates()
     print_info_table();
     display_options();
 
