@@ -229,7 +229,7 @@ int main() {
     char password_file[256] = {0};
 
     banner();
-    check_for_updates()
+    check_for_updates();
     print_info_table();
     display_options();
 
